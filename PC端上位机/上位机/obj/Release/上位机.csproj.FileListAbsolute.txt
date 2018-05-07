@@ -1,0 +1,8 @@
+C:\Users\Administrator\Desktop\上位机串口调试软件开发\v2.0_Socket版\心跳包检测\上位机\上位机\上位机\bin\Release\上位机.exe.config
+C:\Users\Administrator\Desktop\上位机串口调试软件开发\v2.0_Socket版\心跳包检测\上位机\上位机\上位机\bin\Release\上位机.exe
+C:\Users\Administrator\Desktop\上位机串口调试软件开发\v2.0_Socket版\心跳包检测\上位机\上位机\上位机\bin\Release\上位机.pdb
+C:\Users\Administrator\Desktop\上位机串口调试软件开发\v2.0_Socket版\心跳包检测\上位机\上位机\上位机\obj\Release\上位机.上位机.resources
+C:\Users\Administrator\Desktop\上位机串口调试软件开发\v2.0_Socket版\心跳包检测\上位机\上位机\上位机\obj\Release\上位机.Properties.Resources.resources
+C:\Users\Administrator\Desktop\上位机串口调试软件开发\v2.0_Socket版\心跳包检测\上位机\上位机\上位机\obj\Release\上位机.csproj.GenerateResource.Cache
+C:\Users\Administrator\Desktop\上位机串口调试软件开发\v2.0_Socket版\心跳包检测\上位机\上位机\上位机\obj\Release\上位机.exe
+C:\Users\Administrator\Desktop\上位机串口调试软件开发\v2.0_Socket版\心跳包检测\上位机\上位机\上位机\obj\Release\上位机.pdb
