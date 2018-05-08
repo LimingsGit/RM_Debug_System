@@ -1,0 +1,56 @@
+步兵车无线状态监控及PID调节系统用户文档V1.0
+使用步骤：
+1.插上WIFI模块并通电，打开上位机软件，依次打开串口，初始化WIFI，等待至提示初始化成功后，记录下软件上显示的IP地址。
+下位机串口2接上WIFI模块并给其供电。
+
+2.在下位机程序中引入以下文件，并在其他需要的地方引入wifi.h：
+datatransfer.h
+datatransfer.c
+wifi.h
+wifi.c
+
+3.在主函数中使用wifi.h中宏定义的车类型常量与上位机显示的IP地址初始化WIFI模块，如下所示：
+init_Wifi(VEHICLE_TYPE_PACER_1,"192.168.x.x"); 
+
+4.在串口2的中断函数中调用Receive_Prepare()处理收到收到的字节数据，如下所示：
+void USART2_IRQHandler(void)                	//串口2中断服务程序
+{
+	u8 Res;
+	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)  
+	{
+		USART_ClearITPendingBit(USART2,USART_IT_RXNE);//清除中断标志
+		Res =USART_ReceiveData(USART2);//(USART2->DR);	//读取接收到的数据
+		Receive_Prepare(Res);	
+  }
+}
+
+5.通过任意一个中断函数1ms调用一次发送状态更新函数：
+update_wifi_send_flag();
+
+6.在主函数的while(1)中以最高频率调用发送检测函数：
+always_send();
+
+7.在你想发送数据的时候调用发送函数，其参数为一个步兵车状态信息结构体，内部包含9个电机状态信息结构体，注意其中的变量必须为归一化后的值，两个结构体均在wifi.h中定义，赋值方式可参考如下方式：
+Pacer_Vehicle_Condition_TypeDef pacer_vehicle_condition;
+Motor_Condition_TypeDef motor_condition;
+//1.1获取默认的电机状态信息结构体
+motor_condition=get_default_motor_conditon();
+//1.2为需要发送的成员赋值
+motor_condition.i=current_i/MAX_I;
+motor_condition.v=current_v/MAX_V;
+//2.1获取默认的步兵车信息结构体
+pacer_vehicle_condition=get_default_pacer_vehicle_conditon();
+//2.2为需要发送的成员赋值
+pacer_vehicle_condition.chassis_motor1_condition=motor_condition;
+pacer_vehicle_condition.chassis_motor2_condition=motor_condition;
+pacer_vehicle_condition.chassis_motor3_condition=motor_condition;
+pacer_vehicle_condition.chassis_motor4_condition=motor_condition;
+pacer_vehicle_condition.cradle_yaw_motor_condition=motor_condition;
+pacer_vehicle_condition.cradle_pitch_motor_condition=motor_condition;
+pacer_vehicle_condition.rammer_motor_condition=motor_condition;
+pacer_vehicle_condition.shooter1_motor_condition=motor_condition;
+pacer_vehicle_condition.shooter2_motor_condition=motor_condition;
+//3.发送步兵车信息至上位机
+send_pacer_vihecle_condition(&pacer_vehicle_condition);
+
+8.自行填充wifi.c文件中最后的9个函数，对上位机发过来的PID参数进行处理
